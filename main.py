@@ -20,4 +20,6 @@ frameAgenda.grid_propagate(False)
 notebook.add(frameAlunos, text="Alunos")
 notebook.add(frameAgenda, text="Agenda")
 
+print("teste")
+
 app.mainloop();
