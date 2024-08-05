@@ -3,7 +3,7 @@ from tkinter import ttk
 
 frames = {}
 
-alunos = [1, 2, 3, 4]
+alunos = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
 
 class App(Tk):
     def __init__(self):
@@ -11,6 +11,10 @@ class App(Tk):
 
         self.title = "Controle"
         self.geometry("1080x1080")
+
+        self.infoLabels = ["Nome", "Status do Pagamento", "Data de Vencimento", "Idade"]
+        self.FramesDict = {}
+        self.labelsDict = {}
 
         self.startup()
     
@@ -30,20 +34,17 @@ class App(Tk):
         self.notebook.add(self.frameAlunos, text="Alunos")
         self.notebook.add(self.frameAgenda, text="Agenda")
     
+        self.newInfoFrame()
+    
     def newInfoFrame(self):
-
-        self.infoFrame = Frame(self.frameAlunos, width="500", height="100", highlightthickness=1, highlightbackground="black")
-        self.infoFrame.pack(anchor=W)
-        self.infoFrame.pack_propagate(False)
-
-        self.nomeLabel = Label(self.infoFrame, text="Nome: ")
-        self.nomeLabel.pack(anchor=W)
-
-        self.statusLabel = Label(self.infoFrame, text="Status de Pagamento: ")
-        self.statusLabel.pack(anchor=W)
-
-        self.nomeLabel = Label(self.infoFrame, text="Data de Vencimento do Pagamento: ")
-        self.nomeLabel.pack(anchor=W)
+        for aluno in alunos:
+            self.FramesDict[aluno] = Frame(self.frameAlunos, width="500", height="100", highlightthickness=1, highlightbackground="black")
+            self.FramesDict[aluno].pack(anchor=W, pady=1)
+            self.FramesDict[aluno].pack_propagate(False)
+            
+            for i in self.infoLabels:
+                self.labelsDict[i] = Label(self.FramesDict[aluno], text=i)
+                self.labelsDict[i].pack(anchor=W)
     
 if __name__ == "__main__":
     root = App()
