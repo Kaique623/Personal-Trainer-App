@@ -3,7 +3,7 @@ from tkinter import ttk
 
 frames = {}
 
-alunos = {0: {"Nome": "Kaique", "Status do Pagamento": "Pago", "Data de Vencimento": '06/08/2024', "Idade":16}, 1:'aluno2'}
+alunos = {0: {"Nome": "Kaique", "Status do Pagamento": "Pago", "Data de Vencimento": '06/08/2024', "Idade":16}}
 
 class App(Tk):
     def __init__(self):
@@ -43,21 +43,28 @@ class App(Tk):
     
     def newInfoFrame(self, page):
         
-        for num in range(0 + (5*page), 5 + (5*page)):  
+        for num in range(0 + (9*page), 9 + (9*page)):  
                 self.FramesDict[num] = Frame(self.frameAlunos, width="1080", height="100", highlightthickness=1, highlightbackground="black")
                 self.FramesDict[num].pack(anchor=W, pady=1)
                 self.FramesDict[num].pack_propagate(False)
-                self.FramesDict[num].bind("<Button-1>", lambda e: self.openInfo(num))
+                try:
+                    alunos[num]
+                    self.FramesDict[num].bind("<Button-1>", lambda e: self.openInfo(num))
+                except:
+                    pass
                 
                 for i in self.infoLabels:
                     try:
                         self.labelsDict[i] = Label(self.FramesDict[num], text=f'{i}: {alunos[num][i]}')
                         self.labelsDict[i].pack(anchor=W)
                     except:
-                        pass
+                        self.labelsDict[i] = Label(self.FramesDict[num], text=f'{i}:')
+                        self.labelsDict[i].pack(anchor=W)
         
     def openInfo(self, button):
         self.clear()
+        
+        
     
 if __name__ == "__main__":
     root = App()
