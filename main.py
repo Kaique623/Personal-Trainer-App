@@ -3,7 +3,7 @@ from tkinter import ttk
 
 frames = {}
 
-alunos = {0: {"Nome": "Kaique", "Status do Pagamento": "Pago", "Data de Vencimento": '06/08/2024', "Idade":16}}
+alunos = {0: {"Nome": "Kaique", "Status do Pagamento": "Pago", "Data de Vencimento": '06/08/2024', "Idade":16}, 1: {"Nome": "Bruna"}}
 
 class App(Tk):
     def __init__(self):
@@ -48,8 +48,9 @@ class App(Tk):
                 self.FramesDict[num].pack(anchor=W, pady=1)
                 self.FramesDict[num].pack_propagate(False)
                 try:
-                    alunos[num]
-                    self.FramesDict[num].bind("<Button-1>", lambda e: self.openInfo(num))
+                    placeholder = alunos[num]
+                    self.FramesDict[num].bind("<Button-1>", lambda e, a=num: self.openInfo(a))
+                    print(num)
                 except:
                     pass
                 
@@ -61,8 +62,13 @@ class App(Tk):
                         self.labelsDict[i] = Label(self.FramesDict[num], text=f'{i}:')
                         self.labelsDict[i].pack(anchor=W)
         
-    def openInfo(self, button):
+        
+    def openInfo(self, aluno):
         self.clear()
+        
+        for i in self.infoLabels:
+                self.labelsDict[i] = Label(self, text=f'{i}: {alunos[aluno][i]}', font=("Helvetica", "48"))
+                self.labelsDict[i].pack(anchor=W)
         
         
     
