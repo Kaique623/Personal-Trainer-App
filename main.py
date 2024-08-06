@@ -3,7 +3,7 @@ from tkinter import ttk
 
 frames = {}
 
-alunos = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+alunos = {0: {"Nome": "Kaique", "Status do Pagamento": "Pago", "Data de Vencimento": '06/08/2024', "Idade":16}, 1:'aluno2'}
 
 class App(Tk):
     def __init__(self):
@@ -15,36 +15,49 @@ class App(Tk):
         self.infoLabels = ["Nome", "Status do Pagamento", "Data de Vencimento", "Idade"]
         self.FramesDict = {}
         self.labelsDict = {}
+        self.labelsValue = {}
 
         self.startup()
     
+    def clear(self):
+        for i in self.winfo_children():
+            i.destroy()
+    
     def startup(self):
-        self.notebook = ttk.Notebook(self, width="520", height="1080")
+        self.notebook = ttk.Notebook(self, width="1080", height="1080")
         self.notebook.pack()
         self.notebook.pack_propagate(False)
 
-        self.frameAlunos = Frame(self.notebook, width="520", height="1080")
+        self.frameAlunos = Frame(self.notebook, width="1080", height="1080")
         self.frameAlunos.pack()
         self.frameAlunos.pack_propagate(False)
 
-        self.frameAgenda = Frame(self.notebook, width="520",  height="1080")
+        self.frameAgenda = Frame(self.notebook, width="1080",  height="1080")
         self.frameAgenda.pack()
         self.frameAgenda.pack_propagate(False)
 
         self.notebook.add(self.frameAlunos, text="Alunos")
         self.notebook.add(self.frameAgenda, text="Agenda")
     
-        self.newInfoFrame()
+        self.newInfoFrame(0)
     
-    def newInfoFrame(self):
-        for aluno in alunos:
-            self.FramesDict[aluno] = Frame(self.frameAlunos, width="500", height="100", highlightthickness=1, highlightbackground="black")
-            self.FramesDict[aluno].pack(anchor=W, pady=1)
-            self.FramesDict[aluno].pack_propagate(False)
-            
-            for i in self.infoLabels:
-                self.labelsDict[i] = Label(self.FramesDict[aluno], text=i)
-                self.labelsDict[i].pack(anchor=W)
+    def newInfoFrame(self, page):
+        
+        for num in range(0 + (5*page), 5 + (5*page)):  
+                self.FramesDict[num] = Frame(self.frameAlunos, width="1080", height="100", highlightthickness=1, highlightbackground="black")
+                self.FramesDict[num].pack(anchor=W, pady=1)
+                self.FramesDict[num].pack_propagate(False)
+                self.FramesDict[num].bind("<Button-1>", lambda e: self.openInfo(num))
+                
+                for i in self.infoLabels:
+                    try:
+                        self.labelsDict[i] = Label(self.FramesDict[num], text=f'{i}: {alunos[num][i]}')
+                        self.labelsDict[i].pack(anchor=W)
+                    except:
+                        pass
+        
+    def openInfo(self, button):
+        self.clear()
     
 if __name__ == "__main__":
     root = App()
