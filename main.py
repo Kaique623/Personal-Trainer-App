@@ -2,18 +2,16 @@ from tkinter import *
 from tkinter import ttk
 
 frames = {}
-
-#alunos = [{"Nome": "Kaique Madureira", "Idade":'16 anos', "Altura": '162 cm', "Peso": '47 KG', "Gênero": "M"}, {"Nome": "Bruna"}]
 alunos = []
 
 class App(Tk):
     def __init__(self):
         super().__init__()
 
-        self.title = "Controle"
+        self.title("Controle")
         self.geometry("1080x1080")
         
-        self.infoLabels = ['Nome', 'Idade', 'Altura', 'Peso']
+        self.infoLabels = ['Nome', 'Idade', 'Altura (cm)', 'Peso (Kg)']
         self.FramesDict = {}
         self.labelsDict = {}
         self.labelsValue = {}
@@ -32,6 +30,7 @@ class App(Tk):
             i.destroy()
     
     def startup(self):
+        
         self.notebook = ttk.Notebook(self, width="1080", height="1080")
         self.notebook.pack()
         self.notebook.pack_propagate(False)
@@ -120,7 +119,7 @@ class App(Tk):
     def openInfo(self, aluno):
         self.clear()
           
-        self.info = ['Nome', 'Idade', 'Altura', 'Peso', 'Gênero']
+        self.info = ['Nome', 'Idade', 'Altura (cm)', 'Peso (Kg)', 'Gênero']
         self.openInfoFrames = {}
         self.openInfoEntry = {}
         self.openInfoValues = {}
@@ -153,14 +152,14 @@ class App(Tk):
     def substituirInfo(self, aluno):
         alunos[aluno] = {"Nome": self.openInfoEntry["Nome"].get(),
                         "Idade": self.openInfoEntry["Idade"].get(),
-                        "Peso": self.openInfoEntry["Peso"].get(),
-                        "Altura": self.openInfoEntry["Altura"].get(),
+                        "Peso (Kg)": self.openInfoEntry["Peso (Kg)"].get(),
+                        "Altura (cm)": self.openInfoEntry["Altura (cm)"].get(),
                         "Gênero": self.openInfoEntry["Gênero"].get()}
         
         
     def telaDeCadastro(self):
         self.clear()
-        self.infoCadastro = ['Nome', 'Idade', 'Peso','Altura', 'Gênero']
+        self.infoCadastro = ['Nome', 'Idade', 'Peso (Kg)','Altura (cm)', 'Gênero']
         self.cadastroLabel = {}
         self.cadastroEntry = {}
         
@@ -196,8 +195,8 @@ class App(Tk):
         if self.canSave:
             alunos.append({"Nome": self.cadastroEntry["Nome"].get(),
                         "Idade": self.cadastroEntry["Idade"].get(),
-                        "Peso": self.cadastroEntry["Peso"].get(),
-                        "Altura": self.cadastroEntry["Altura"].get(),
+                        "Peso (Kg)": self.cadastroEntry["Peso (Kg)"].get(),
+                        "Altura (cm)": self.cadastroEntry["Altura (cm)"].get(),
                         "Gênero": self.cadastroEntry["Gênero"].get()})
             self.refreshMainPage()
         else:
