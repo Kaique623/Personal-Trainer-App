@@ -1,0 +1,32 @@
+from tkinter import *
+from tkinter import ttk
+from tkcalendar import Calendar
+app = Tk()
+
+app.geometry('500x500')
+ 
+nb=ttk.Notebook(app)
+nb.place(x=0, y=0, width=500, height=300)
+ 
+tb1=Frame(nb)
+
+nb.add(tb1, text="Calendário")
+
+ 
+lb1=Label(tb1, text= 'Calendário')
+lb1.pack()
+cal = Calendar(app, selectmode = 'day', 
+               year = 2020, month = 5, 
+               day = 22) 
+  
+cal.pack(pady = 20) 
+  
+def grad_date(): 
+    date.config(text = "Data Selecionada: " + cal.get_date()) 
+Button(app, text = "Mostrar data", 
+       command = grad_date).pack(pady = 20) 
+  
+date = Label(app, text = "") 
+date.pack(pady = 20) 
+ 
+app.mainloop()
