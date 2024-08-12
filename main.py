@@ -1,6 +1,7 @@
 from tkinter import *
 from tkinter import ttk
 import json
+from tkcalendar import DateEntry
 
 open('data/alunos.json', 'a+').close()
 try:
@@ -32,6 +33,7 @@ class App(Tk):
             self.maxPage = (len(alunos)/8) - 1
 
         self.startup()
+        self.setupAgenda()
     
     def clear(self):
         for i in self.winfo_children():
@@ -358,6 +360,48 @@ class App(Tk):
         else:
             self.errorLabel.config(fg="red")
         
+    def setupAgenda(self):
+        agendaFrame = Frame(self.frameAgenda)
+        agendaFrame.pack(pady=20)
+        
+        
+        dateLabel = Label(agendaFrame, text="Data", font=("Arial", 12))
+        dateLabel.grid(row=0, column=0, padx=10)
+        self.dateEntry = DateEntry(agendaFrame, width=12, font=("Arial", 12))
+        self.dateEntry.grid(row=0, column=1)
+        
+        
+        taskLabel = Label(agendaFrame, text="Horario", font=("Arial", 12))
+        taskLabel.grid(row=0, column=2, padx=10)
+        self.taskEntry = Entry(agendaFrame, font=("Arial", 12))
+        self.taskEntry.grid(row=0, column=3)
+        
+        self.labelHora = Label(self.frameAgenda, text="Tarefa", font=("Arial", 16))
+        self.labelHora.pack(pady=10)
+
+        self.entryHora = Entry(self.frameAgenda, width=50)
+        self.entryHora.pack(pady=10)
+        
+        addButton = Button(agendaFrame, text="Adicionar", font=("Arial", 12), command=self.addTask)
+        addButton.grid(row=0, column=4, padx=10)
+        
+       
+        self.taskList = Listbox(self.frameAgenda, font=("Arial", 12), width=50)
+        self.taskList.pack(pady=20)
+        
+
+        removeButton = Button(self.frameAgenda, text="Remover Tarefa", font=("Arial", 12), command=self.removeTask)
+        removeButton.pack(pady=10)
+    
+    def addTask(self):
+        task = f"{self.dateEntry.get()} - {self.taskEntry.get()} - {self.entryHora.get()}"
+        self.taskList.insert(END, task)
+    
+    def removeTask(self):
+        selectedTask = self.taskList.curselection()
+        if selectedTask:
+            self.taskList.delete(selectedTask)
+
 if __name__ == "__main__":
     root = App()
     root.mainloop()
