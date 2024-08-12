@@ -9,9 +9,6 @@ try:
 except:
     alunos = []
 frames = {}
-#alunos = [{"Nome": "Kaique", "Idade": 16, "Altura (cm)": 162, "Peso (Kg)": 47, 'Gênero': "M", "Ficha": {'A': {"Supino Reto": [0, 0, 0, 0]}, 'B': {"Remada": [0, 0, 0, 0]}}}]
-
-
 
 listaTreinos = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U']
 
