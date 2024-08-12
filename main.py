@@ -2,6 +2,10 @@ from tkinter import *
 from tkinter import ttk
 import json
 from tkcalendar import DateEntry
+import os
+
+if not os.path.exists('data'): #Cria uma pasta chamada 'data' caso não exista uma
+    os.makedirs('data')
 
 open('data/alunos.json', 'a+').close()
 try:
@@ -192,6 +196,9 @@ class App(Tk):
         self.checkButton2.grid(column=1, row=0, sticky=W)
 
         self.pagamentoBoolean.set(alunos[aluno]["Pago"])
+        
+        self.apagarAluno = Button(self, text="Remover Aluno", width=23, height=2, font=("Arial", "12"), command=lambda: self.deletarAluno(aluno))
+        self.apagarAluno.grid(column=3, row=2, columnspan=2)
 
         self.exercise = {}
         for i in alunos[aluno]["Ficha"].keys():
@@ -280,7 +287,13 @@ class App(Tk):
             self.openInfo(aluno, f'.!notebook{str(self.curNotebook)}.!frame{tab + 1}')
         except:
             self.adicionarExercicio(tab, aluno)   
-                 
+    
+    def deletarAluno(self, aluno):
+        del alunos[aluno]
+        with open('data/alunos.json', 'w') as data:
+            json.dump(alunos, data)
+        self.refreshMainPage()
+       
     def substituirInfo(self, aluno, sair):
         fichasaux = {}
         for i in alunos[aluno]["Ficha"].keys():
