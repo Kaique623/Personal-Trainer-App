@@ -99,7 +99,12 @@ class App(Tk):
         for num in range(0 + (8*self.curPage), 8 + (8*self.curPage)):  
             try:
                 alunos[num]
-                self.FramesDict[num] = Frame(self.frameAlunos, width="1080", height="100", highlightthickness=1, highlightbackground="black")
+                self.FramesDict[num] = Frame(self.frameAlunos, width="1080", height="100", highlightthickness=2, highlightbackground="black")
+                if alunos[num]["Pago"] == True:
+                    self.FramesDict[num].config(highlightbackground="green2")
+                else:
+                    self.FramesDict[num].config(highlightbackground="red")
+                    
                 self.FramesDict[num].pack(anchor=W, pady=1)
                 self.FramesDict[num].pack_propagate(False)
                 self.FramesDict[num].bind("<Button-1>", lambda e, a=num: self.openInfo(a, '0'))
@@ -169,10 +174,26 @@ class App(Tk):
         self.treinos = {}
     
         self.fichaFrame = ttk.Notebook(self, width=1070, height=600)
-        self.fichaFrame.grid(columnspan=10, row=3, padx=5, pady=10)
+        self.fichaFrame.grid(columnspan=10, row=4, padx=5, pady=10)
         
         self.exercicioNovo = Button(self, text="Adicionar Exercicio", width=23, height=2, font=("Arial", "12"), command=lambda a=aluno: self.adicionarExercicio(self.fichaFrame.select(), a))
         self.exercicioNovo.grid(column=3, row=1, columnspan=2)
+        
+        self.pagamentoBoolean = BooleanVar()
+        self.framePagamento = Label(self, text="Status de Pagamento", font=("Arial", "12"))
+        self.framePagamento.grid(pady=3, sticky=W, padx=3, column=0, row=2)
+        
+        self.checkbuttonFrame = Frame(self, width=240, height=60)
+        self.checkbuttonFrame.grid(column=0, row=3, sticky=W)
+        
+        self.checkButton1 = Checkbutton(self.checkbuttonFrame, text="Pago", variable=self.pagamentoBoolean, onvalue=True, offvalue=False, font=("Arial", "12"))
+        self.checkButton1.grid(column=0, row=0, sticky=W)
+        
+        self.checkButton2 = Checkbutton(self.checkbuttonFrame, text="Pendente", variable=self.pagamentoBoolean, onvalue=False, offvalue=True, font=("Arial", "12"))
+        self.checkButton2.grid(column=1, row=0, sticky=W)
+
+        self.pagamentoBoolean.set(alunos[aluno]["Pago"])
+
         self.exercise = {}
         for i in alunos[aluno]["Ficha"].keys():
             self.treinos[i] = Frame(self.fichaFrame, width=1066, height=600, highlightthickness=1, highlightbackground="black")
@@ -268,17 +289,20 @@ class App(Tk):
             for a in alunos[aluno]["Ficha"][i]:
                 fichasaux[i][self.exercise[i][a]['StringNome'].get()] = [self.exercise[i][a]['StringSérie'].get(), self.exercise[i][a]['StringRep'].get(), self.exercise[i][a]['StringCarga'].get(), self.exercise[i][a]['StringIntervalo'].get()]
         
-        with open('data/alunos.json', 'w') as data:
-            json.dump(alunos, data)
-        
         alunos[aluno] = {"Nome": self.openInfoEntry["Nome"].get(),
                         "Idade": self.openInfoEntry["Idade"].get(),
                         "Peso (Kg)": self.openInfoEntry["Peso (Kg)"].get(),
                         "Altura (cm)": self.openInfoEntry["Altura (cm)"].get(),
                         "Gênero": self.openInfoEntry["Gênero"].get(),
-                        "Ficha": []}
+                        "Pago": self.pagamentoBoolean.get(),
+                        "Ficha": []
+                        }
         
         alunos[aluno]["Ficha"] = fichasaux
+        
+        with open('data/alunos.json', 'w') as data:
+            json.dump(alunos, data)
+
         print("Informação Salva!")
         if sair:
             self.refreshMainPage()
@@ -331,6 +355,7 @@ class App(Tk):
                         "Peso (Kg)": self.cadastroEntry["Peso (Kg)"].get(),
                         "Altura (cm)": self.cadastroEntry["Altura (cm)"].get(),
                         "Gênero": self.cadastroEntry["Gênero"].get(),
+                        "Pago": False,
                         "Ficha": {"A": {"Exercicio1": [0, 0, 0, 0]}}})
             self.refreshMainPage()
         else:
